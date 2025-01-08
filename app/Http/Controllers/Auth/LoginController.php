@@ -21,26 +21,31 @@ class LoginController extends Controller
     /**
      * Handle the login request.
      */
-    public function login(LoginRequest $request)
+    public function login(Request $request, Google2FA $google2fa)
     {
-        // Attempt to log in the user with email and password
-        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'two_factor_code' => 'required|digits:6',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            $secret = $user->google2fa_secret; // Retrieve the stored secret key
 
-            // If 2FA is enabled for this user, validate the 2FA code
-            if ($user->google2fa_secret) {
-                $google2fa = new Google2FA();
+            $isValid = $google2fa->verifyKey($secret, $request->input('two_factor_code'));
 
-                // Check if the 2FA code is provided in the request
-                if (!$request->filled('2fa_code')) {
-                    return $this->logoutAndRedirect($request, 'Please enter your 2FA code.');
-                }
-
-                // Validate the provided 2FA code
-                if (!$google2fa->verifyKey($user->google2fa_secret, $request->input('2fa_code'))) {
-                    return $this->logoutAndRedirect($request, 'The 2FA code you entered is invalid.');
-                }
+            if ($isValid) {
+                // 2FA code is valid, proceed to dashboard
+                return redirect()->intended('/dashboard');
+            } else {
+                // 2FA code is invalid, show error message
+                Auth::logout();
+                return back()->withErrors(['two_factor_code' => 'The provided 2FA code is invalid.']);
             }
+        
 
             // Regenerate the session and redirect based on role
             $request->session()->regenerate();

@@ -1,31 +1,24 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h2>User Dashboard</h2>
+    
+    <!-- Button to navigate to create meeting page -->
+    <a href="{{ route('create.meeting') }}" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
+        Start Video Call
+    </a>
 
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}"> <!-- Link to your sidebar CSS -->
-
-    <div class="flex">
-        <!-- Sidebar -->
-        <div class="sidebar bg-gray-200 w-64 h-screen p-4">
-            <h3 class="font-semibold text-lg">Menu</h3>
-            <ul class="mt-4">
-                <li><a href="#" class="block py-2 px-4 text-gray-700 hover:bg-gray-300 rounded">Dashboard</a></li>
-                <li><a href="#" class="block py-2 px-4 text-gray-700 hover:bg-gray-300 rounded">Profile</a></li>
-                <li><a href="#" class="block py-2 px-4 text-gray-700 hover:bg-gray-300 rounded">Settings</a></li>
-                <li><a href="#" class="block py-2 px-4 text-gray-700 hover:bg-gray-300 rounded">Logout</a></li>
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content flex-1 p-6 ml-64">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+    <!-- Button to log out and navigate to login page -->
+    <form method="POST" action="{{ route('logout') }}" class="mt-4">
+        @csrf
+        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded">
+            Log Out
+        </button>
+    </form>
+</body>
+</html>

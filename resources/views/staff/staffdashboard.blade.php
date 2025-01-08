@@ -9,7 +9,7 @@
     <h2>Staff Dashboard</h2>
     
     <!-- Button to navigate to create meeting page -->
-    <a href="{{ route('create.meeting') }}" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
+    <a href="/agoraVideo/index.html" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
         Start Video Call
     </a>
 

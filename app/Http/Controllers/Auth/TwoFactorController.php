@@ -18,6 +18,10 @@ class TwoFactorController extends Controller
         // Generate a secret key for the user
         $secret = $google2fa->generateSecretKey();
 
+        // Save the secret key to the user's record
+        $user->google2fa_secret = $secret;
+        $user->save();
+
         // Generate the QR code URL
         $qrCodeUrl = $google2fa->getQRCodeUrl(
             config('app.name'), // Application Name
@@ -30,5 +34,30 @@ class TwoFactorController extends Controller
             'qrCodeUrl' => $qrCodeUrl,
             'secret' => $secret,
         ]);
+    }
+
+    // Verify the 2FA code
+    public function verify(Request $request, Google2FA $google2fa)
+    {
+        $request->validate([
+            '2faCode' => 'required|digits:6',
+        ]);
+
+        $user = Auth::user();
+        $secret = $user->google2fa_secret; // Retrieve the stored secret key
+
+        // Debugging statements
+        \Log::info('Secret Key: ' . $secret);
+        \Log::info('2FA Code: ' . $request->input('2faCode'));
+
+        $isValid = $google2fa->verifyKey($secret, $request->input('2faCode'));
+
+        if ($isValid) {
+            // 2FA code is valid, proceed to login page
+            return redirect()->intended('/login');
+        } else {
+            // 2FA code is invalid, show error message
+            return back()->withErrors(['2faCode' => 'The provided 2FA code is invalid.']);
+        }
     }
 }

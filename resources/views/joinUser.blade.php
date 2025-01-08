@@ -5,37 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>video Stream</title>
     <link rel="stylesheet" type="text/css" media="screen" href="{{asset('agoraVideo/main.css')}}">
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"  crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
 @if(!session()->has('meeting'))
     <input type="text" id="linkname" value="">
-    @endif
-    <input type="text" id="linkUrl" value="{{url('joinMeeting')}}/{{$meeting->url}}">
-    <!-- <button id="join-btn" style="display:none;"></button> -->
-    <!-- <button id="join-btn2">Join Stream</button> -->
-    <button id="join-btn" style="display: none;"></button>
-    <button id="join-btn2" >Join Stream</button>
-    <button id="join-btns" onclick="copyLink()">Copy link</button>
+@endif
+<input type="text" id="linkUrl" value="{{url('joinMeeting')}}/{{$meeting->url}}">
+<button id="join-btn" style="display: none;"></button>
+<button id="join-btn2">Join Stream</button>
+<button id="join-btns" onclick="copyLink()">Copy link</button>
 
+<!-- Meeting Instance -->
+<div id="stream-wrapper" style="height: 100%; display:block">
+    <div id="video-streams"></div>
 
-    <!-- Meeting Instance -->
-    <div id="stream-wrapper" style="height: 100%; display:block">
-        <div id="video-streams"></div>
-
-        <div id="stream-controls">
-            <button id="leave-btn">Leave Stream</button>
-            <button id="mic-btn">Mic On</button>
-            <button id="camera-btn">Camera on</button>
-            <!-- <button id="rec-btn">Rec off</button> -->
-        </div>
+    <div id="stream-controls">
+        <button id="leave-btn">Leave Stream</button>
+        <button id="mic-btn">Mic On</button>
+        <button id="camera-btn">Camera on</button>
     </div>
-    <input id="appid" type="hidden" value="{{$meeting->app_id}}" readonly>
-    <input id="token" type="hidden" value="{{$meeting->token}}" readonly>
-    <input id="channel" type="hidden" value="{{$meeting->channel}}" readonly>
-    <input id="urlId" type="hidden" value="{{$meeting->url}}" readonly>
-    <input id="event" type="hidden" value="{{$event}}" readonly>
+</div>
+<input id="appid" type="hidden" value="{{$meeting->app_id}}" readonly>
+<input id="token" type="hidden" value="{{$meeting->token}}" readonly>
+<input id="channel" type="hidden" value="{{$meeting->channel}}" readonly>
+<input id="urlId" type="hidden" value="{{$meeting->url}}" readonly>
+<input id="event" type="hidden" value="{{$event}}" readonly>
 
     <input id="timer" type="hidden" value="0">
     <input id="user_meeting" type="hidden" value="0">
@@ -69,7 +65,7 @@
     @endif
 </body>
 
-<script src="{{asset('agoraVideo/AgoraRTC_N-4.7.3.js')}}" ></script>
+<script src="{{asset('agoraVideo/AgoraRTC_N-4.23.0.js')}}" ></script>
 <script src="{{asset('agoraVideo/main.js')}}" ></script>
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
   <script>

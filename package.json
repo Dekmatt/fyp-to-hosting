@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
+        "agora-rtc-sdk-ng": "^4.23.0",
         "firebase": "^11.1.0"
     }
 }

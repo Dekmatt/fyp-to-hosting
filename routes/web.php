@@ -110,3 +110,4 @@ Route::middleware('auth')->group(function () {
 
 Route::get('twofactor', [LoginController::class, 'showTwoFactorForm'])->name('auth.twofactor');
 Route::post('verify-2fa', [LoginController::class, 'verify2fa'])->name('auth.verify2fa');
+Route::post('/2fa/verify', [App\Http\Controllers\Auth\TwoFactorController::class, 'verify'])->name('2fa.verify');

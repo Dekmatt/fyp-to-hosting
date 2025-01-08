@@ -19,22 +19,22 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- 2FA Input (Always Displayed) -->
-        <div class="mt-4">
-            <x-input-label for="two_factor_code" :value="__('Two-Factor Authentication Code')" />
-            <x-text-input 
-                id="two_factor_code" 
-                class="block mt-1 w-full" 
-                type="text" 
-                name="two_factor_code" 
-                placeholder="Enter 6-digit code"
-                required 
-                maxlength="6"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);"
-                autocomplete="off"
-            />
-            <x-input-error :messages="$errors->get('two_factor_code')" class="mt-2" />
-        </div>
+    <!-- 2FA Input (Always Displayed) -->
+    <div class="mt-4">
+        <x-input-label for="two_factor_code" :value="__('Two-Factor Authentication Code')" />
+        <x-text-input 
+            id="two_factor_code" 
+            class="block mt-1 w-full" 
+            type="text" 
+            name="two_factor_code" 
+            placeholder="Enter 6-digit code"
+            required 
+            maxlength="6"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);"
+            autocomplete="off"
+        />
+        <x-input-error :messages="$errors->get('two_factor_code')" class="mt-2" />
+    </div>
 
         <!-- Remember Me -->
         <div class="block mt-4">

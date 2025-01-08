@@ -41,16 +41,15 @@
             background-color: #dc3545;
         }
 
-        /* Timer styling */
-        .timer {
-            font-size: 20px;
-            font-weight: bold;
-            color: #007bff;
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Setup Two-Factor Authentication</h1>
+    <h1>Two-Factor Authentication</h1>
 
     {{-- Display Secret Key --}}
     <p><strong>Secret Key:</strong> {{ $secret }}</p>
@@ -58,32 +57,33 @@
     {{-- Generate and display the QR code --}}
     <p><strong>Scan this QR code with your authentication app:</strong></p>
     <div>
-        <img id="qrCode" src="{!! QrCode::size(200)->generate($qrCodeUrl) !!}" alt="QR Code">
+        <src>{!! QrCode::size(200)->generate($qrCodeUrl) !!}
     </div>
 
     {{-- Button to show the message box --}}
     <button class="modal-button" id="openModalBtn">Login</button>
 
-    {{-- Modal Message Box --}}
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <h2>Important</h2>
-            <p><strong>Make sure that you have already scanned or used the secret key for Two-Factor Authentication before continuing to the login page.</strong></p>
-            <button class="modal-button cancel" id="cancelBtn">Cancel</button>
-            <button class="modal-button" id="confirmBtn">Confirm</button>
-        </div>
-    </div>
-
-    {{-- Timer Display --}}
-    <p class="timer" id="countdownTimer">Time to refresh new QR code: 30 seconds</p>
+    {{-- Modal Message Box for Entering 2FA Code --}}
+<form method="POST" action="{{ route('2fa.verify') }}">
+    @csrf
+    <input type="text" id="2faCode" name="2faCode" class="modal-input" placeholder="Enter 2FA Code" maxlength="6" />
+    <span id="error-message" style="display:none; color:red;">Incorrect 2FA code</span>
+    <button type="submit" id="confirmBtn">Confirm</button>
+</form>
 
     <script>
+        // Validate input to ensure only numbers are entered
+        function validateInput(event) {
+            // Remove any non-numeric characters
+            event.target.value = event.target.value.replace(/\D/g, '');
+        }
+
         // Get modal and buttons
         const modal = document.getElementById("modal");
         const openModalBtn = document.getElementById("openModalBtn");
         const cancelBtn = document.getElementById("cancelBtn");
         const confirmBtn = document.getElementById("confirmBtn");
-        const countdownTimer = document.getElementById("countdownTimer");
+        const errorMessage = document.getElementById("error-message");
 
         // Open the modal
         openModalBtn.onclick = function() {
@@ -97,7 +97,17 @@
 
         // Redirect to login page (Confirm button)
         confirmBtn.onclick = function() {
-            window.location.href = "/login"; // Replace with the correct login route
+            const code = document.getElementById("2faCode").value;
+
+            // Check if the code is exactly 6 digits
+            if (code.length !== 6) {
+                // Show error message if the code is not 6 digits
+                errorMessage.style.display = "block";
+            } else {
+                // Hide error message and redirect to login page
+                errorMessage.style.display = "none";
+                window.location.href = "/login"; // Replace with the correct login route
+            }
         };
 
         // Close modal if clicked outside of modal content
@@ -106,28 +116,6 @@
                 modal.style.display = "none";
             }
         };
-
-        // Function to refresh the page every 30 seconds
-        function refreshPage() {
-            window.location.reload();  // Reload the page
-        }
-
-        // Countdown logic
-        let countdownValue = 30; // Set countdown starting value
-        function updateCountdown() {
-            countdownTimer.textContent = `Time to refresh new QR code: ${countdownValue} seconds`;
-            if (countdownValue === 0) {
-                refreshPage(); // Refresh page when countdown reaches 0
-            } else {
-                countdownValue--; // Decrement the countdown value
-            }
-        }
-
-        // Update the countdown every second (1000 ms)
-        setInterval(updateCountdown, 1000);
-
-        // Set page to refresh every 30 seconds (30000 ms)
-        setTimeout(refreshPage, 30000);
     </script>
 </body>
 </html>
