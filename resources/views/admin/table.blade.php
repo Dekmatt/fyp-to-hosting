@@ -20,6 +20,7 @@
                         <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Email</th>
                         <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Role</th>
                         <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Created At</th>
+                        <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
@@ -30,6 +31,18 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">{{ $user->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">{{ $user->role }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">{{ $user->created_at }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">
+                                <a href="{{ route('admin.editRole', $user->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                                    Edit Role
+                                </a>
+                                <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this user?')">
+                                        Delete User
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

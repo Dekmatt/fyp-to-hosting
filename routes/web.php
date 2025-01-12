@@ -73,6 +73,23 @@ Route::get('/admin/users', [AdminController::class, 'showUserTable'])
     ->middleware(['auth', 'verified'])
     ->name('admin.users');
 
+Route::get('/admin/users/{id}/edit', [AdminController::class, 'editRole'])
+    ->middleware(['auth', 'verified'])
+    ->name('admin.editRole');
+
+Route::put('/admin/users/{id}', [AdminController::class, 'updateRole'])
+    ->middleware(['auth', 'verified'])
+    ->name('admin.updateRole');
+
+Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])
+    ->middleware(['auth', 'verified'])
+    ->name('admin.deleteUser');
+
+
+
+
+
+
 // Group for authenticated user routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
