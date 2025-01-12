@@ -11,7 +11,6 @@ use Illuminate\Validation\Rules;
 use PragmaRX\Google2FALaravel\Google2FA;
 use Illuminate\Http\RedirectResponse;
 
-
 class RegisteredUserController extends Controller
 {
     /**
@@ -55,13 +54,13 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Redirect to the 2FA setup page with QR code details
-        return redirect()->route('2fa.show')->with([ 
+        return redirect()->route('2fa.show')->with([
             'qrCodeUrl' => $google2fa->getQRCodeUrl(
                 config('app.name'),
                 $user->email,
                 $secret
             ),
             'secret' => $secret,
-        ]);               
+        ]);
     }
 }

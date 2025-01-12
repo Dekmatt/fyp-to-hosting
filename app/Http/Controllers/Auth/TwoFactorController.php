@@ -57,7 +57,7 @@ class TwoFactorController extends Controller
             return redirect()->intended('/login');
         } else {
             // 2FA code is invalid, show error message
-            return back()->withErrors(['2faCode' => 'The provided 2FA code is invalid.']);
+            return back()->with('error', '2FA code is incorrect, scan back for new code');
         }
     }
 }

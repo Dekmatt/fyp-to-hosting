@@ -65,7 +65,7 @@ Route::get('/saveUserName', [MeetingController::class, 'saveUserName'])->name('s
 
 
 // Route for admin dashboard
-Route::get('/admin-dashboard', [AdminController::class, 'dashboard'])
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('admin.dashboard');
 
@@ -84,20 +84,7 @@ Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-// Routes for customers
-Route::group(['middleware' => ['auth', 'role:customer']], function () {
-    Route::get('/customer/dashboard', [UserController::class, 'dashboard'])->name('customer.dashboard');
-});
 
-// Routes for staff
-Route::group(['middleware' => ['auth', 'role:staff']], function () {
-    Route::get('/staff/dashboard', [StaffController::class, 'dashboard'])->name('staff.dashboard');
-});
-
-// Routes for admin
-Route::group(['middleware' => ['auth', 'role:admin']], function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-});
 
 // Add routes for 2FA setup and verification
 Route::middleware('auth')->group(function () {

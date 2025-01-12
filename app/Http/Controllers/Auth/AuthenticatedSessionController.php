@@ -22,42 +22,31 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        // Authenticate the user
-        $user = $request->authenticate();
-
-        // Regenerate the session to prevent session fixation attacks
-        $request->session()->regenerate();
-
-        // Get the user type from the request
-        $userType = $request->input('user_type');
-
-        // Redirect based on user type
-        switch ($userType) {
-            case 'staff':
-                return redirect()->route('staff.dashboard'); // Redirect to staff dashboard
-
-            case 'admin':
-                return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
-
-            case 'customer':
-            default:
-                return redirect()->route('dashboard'); // Redirect to customer dashboard
-        }
-    }
-
     /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        Auth::guard('web')->logout();
+ * Handle an incoming authentication request.
+ */
+public function store(LoginRequest $request): RedirectResponse
+{
+    // Authenticate the user
+    $request->authenticate();
 
-        $request->session()->invalidate();
+    // Regenerate the session to prevent session fixation attacks
+    $request->session()->regenerate();
 
-        $request->session()->regenerateToken();
+    // Get the authenticated user
+    $user = Auth::user();
 
-        return redirect('/');
+    // Redirect based on user role
+    switch ($user->role) {
+        case 'staff':
+            return redirect()->route('staff.dashboard'); // Redirect to staff dashboard
+
+        case 'admin':
+            return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
+
+        case 'customer':
+        default:
+            return redirect()->route('dashboard'); // Redirect to customer dashboard
     }
+}
 }

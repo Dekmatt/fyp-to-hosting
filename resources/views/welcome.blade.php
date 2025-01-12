@@ -1,4 +1,3 @@
-<!-- filepath: /c:/laragon/www/spr-fyp/resources/views/welcome.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,19 +41,32 @@
         }
         .button-container {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
             gap: 10px;
-            margin-top: 250px; /* Move the buttons down */
+            background-color: rgba(255, 255, 255, 0.8); /* Mist color with transparency */
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            right: 40%;
+            top: 60%;
+            transform: translateY(-50%);
+        }
+        .description {
+            font-size: 18px; /* Increase font size */
+            font-weight: bold;
         }
     </style>
 </head>
 <body class="flex-center">
 
     <div class="button-container">
+        <p class="description">Already Have Account?</p>
         <a href="{{ route('login') }}" class="btn">
             <i class="fas fa-sign-in-alt"></i> Login
         </a>
+        <p class="description">Not Registered Yet?</p>
         <a href="{{ route('register') }}" class="btn">
             <i class="fas fa-user-plus"></i> Register
         </a>

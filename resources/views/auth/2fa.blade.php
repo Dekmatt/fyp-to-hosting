@@ -5,71 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Two-Factor Authentication</title>
     <style>
-        /* Style for the modal */
-        .modal {
-            display: none; 
-            position: fixed;
-            z-index: 1; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(0, 0, 0, 0.5); 
-            padding-top: 60px;
+        body {
+            display: flex;
+            align-items: center; /* Center vertically */
+            justify-content: flex-start; /* Align to the left */
+            height: 100vh;
+            background: url('{{ asset('images/2fa.png') }}') no-repeat center center;
+            background-size: cover;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding-left: 5%; /* Adjust this value to move the box to the left middle */
         }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Mist color with transparency */
+            padding: 30px; /* Increase padding */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 400px;
+            width: 100%;
+            text-align: center;
+            font-size: 1em; /* Increase font size */
         }
 
-        .modal-button {
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
+        .container h1 {
+            font-size: 1.5em; /* Increase heading size */
         }
 
-        .modal-button.cancel {
-            background-color: #dc3545;
+        .container p {
+            font-size: 1em; /* Increase paragraph size */
+        }
+
+        .container input {
+            font-size: 1em; /* Increase input font size */
+            padding: 10px; /* Increase input padding */
+            margin-top: 20px; /* Add gap between the QR code and the input box */
+        }
+
+        .container button {
+            font-size: 1em; /* Increase button font size */
+            padding: 10px 20px; /* Increase button padding */
         }
 
         .error-message {
             color: red;
-            font-size: 14px;
+            font-size: 1em; /* Increase error message size */
             margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Two-Factor Authentication</h1>
+    <div class="container">
+        <h1>Two-Factor Authentication</h1>
 
-    {{-- Display Secret Key --}}
-    <p><strong>Secret Key:</strong> {{ $secret }}</p>
+        {{-- Display Secret Key --}}
+        <p><strong>Secret Key:</strong> {{ $secret }}</p>
 
-    {{-- Generate and display the QR code --}}
-    <p><strong>Scan this QR code with your authentication app:</strong></p>
-    <div>
-        <src>{!! QrCode::size(200)->generate($qrCodeUrl) !!}
+        {{-- Generate and display the QR code --}}
+        <p><strong>Scan this QR code with your authentication app:</strong></p>
+        <div>
+            <src>{!! QrCode::size(200)->generate($qrCodeUrl) !!}</src>
+        </div>
+
+        {{-- Modal Message Box for Entering 2FA Code --}}
+        <form method="POST" action="{{ route('2fa.verify') }}">
+            @csrf
+            <input type="text" id="2faCode" name="2faCode" class="modal-input" placeholder="Enter 2FA Code" maxlength="6" oninput="validateInput(event)" />
+            <button type="submit" id="confirmBtn">Confirm</button>
+            <div>
+                @if (session('error'))
+                <span class="error-message">{{ session('error') }}</span>
+                @endif
+            </div>
+        </form>
     </div>
-
-    {{-- Button to show the message box --}}
-    <button class="modal-button" id="openModalBtn">Login</button>
-
-    {{-- Modal Message Box for Entering 2FA Code --}}
-<form method="POST" action="{{ route('2fa.verify') }}">
-    @csrf
-    <input type="text" id="2faCode" name="2faCode" class="modal-input" placeholder="Enter 2FA Code" maxlength="6" />
-    <span id="error-message" style="display:none; color:red;">Incorrect 2FA code</span>
-    <button type="submit" id="confirmBtn">Confirm</button>
-</form>
 
     <script>
         // Validate input to ensure only numbers are entered
@@ -77,45 +86,6 @@
             // Remove any non-numeric characters
             event.target.value = event.target.value.replace(/\D/g, '');
         }
-
-        // Get modal and buttons
-        const modal = document.getElementById("modal");
-        const openModalBtn = document.getElementById("openModalBtn");
-        const cancelBtn = document.getElementById("cancelBtn");
-        const confirmBtn = document.getElementById("confirmBtn");
-        const errorMessage = document.getElementById("error-message");
-
-        // Open the modal
-        openModalBtn.onclick = function() {
-            modal.style.display = "block";
-        };
-
-        // Close the modal (Cancel button)
-        cancelBtn.onclick = function() {
-            modal.style.display = "none";
-        };
-
-        // Redirect to login page (Confirm button)
-        confirmBtn.onclick = function() {
-            const code = document.getElementById("2faCode").value;
-
-            // Check if the code is exactly 6 digits
-            if (code.length !== 6) {
-                // Show error message if the code is not 6 digits
-                errorMessage.style.display = "block";
-            } else {
-                // Hide error message and redirect to login page
-                errorMessage.style.display = "none";
-                window.location.href = "/login"; // Replace with the correct login route
-            }
-        };
-
-        // Close modal if clicked outside of modal content
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        };
     </script>
 </body>
 </html>

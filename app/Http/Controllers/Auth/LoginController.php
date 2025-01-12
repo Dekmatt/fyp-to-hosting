@@ -23,49 +23,37 @@ class LoginController extends Controller
      */
     public function login(Request $request, Google2FA $google2fa)
     {
+        // Validate input
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'two_factor_code' => 'required|digits:6',
+            'two_factor_code' => 'required|digits:6', // Make sure 2FA code is a 6-digit number
         ]);
 
+        // Attempt to authenticate the user with email and password
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $secret = $user->google2fa_secret; // Retrieve the stored secret key
+            $secret = $user->google2fa_secret; // Retrieve the stored secret key for 2FA
 
+            // Verify the 2FA code
             $isValid = $google2fa->verifyKey($secret, $request->input('two_factor_code'));
 
             if ($isValid) {
                 // 2FA code is valid, proceed to dashboard
-                return redirect()->intended('/dashboard');
+                $request->session()->regenerate(); // Regenerate session for security
+                return $this->handleRedirect($user); // Redirect based on role
             } else {
-                // 2FA code is invalid, show error message
+                // 2FA code is invalid, log the user out and show error message
                 Auth::logout();
                 return back()->withErrors(['two_factor_code' => 'The provided 2FA code is invalid.']);
             }
-        
-
-            // Regenerate the session and redirect based on role
-            $request->session()->regenerate();
-            return $this->handleRedirect($user);
         }
 
-        // Authentication failed
+        // Authentication failed, show error message
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ])->withInput($request->except('password'));
-    }
-
-    /**
-     * Log out the user and redirect back with an error message.
-     */
-    protected function logoutAndRedirect(Request $request, $errorMessage)
-    {
-        Auth::logout(); // Log out the user
-        return back()->withErrors([
-            '2fa_code' => $errorMessage,
         ])->withInput($request->except('password'));
     }
 
@@ -76,11 +64,11 @@ class LoginController extends Controller
     {
         switch ($user->role) {
             case 'admin':
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('admin.dashboard'); // Admin dashboard
             case 'staff':
-                return redirect()->route('staff.dashboard');
+                return redirect()->route('staff.dashboard'); // Staff dashboard
             case 'customer':
-                return redirect()->route('customer.dashboard');
+                return redirect()->route('dashboard'); // Customer dashboard
             default:
                 return redirect('/'); // Fallback to home or a default page
         }
@@ -91,12 +79,10 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::logout(); // Log out the user
 
-        // Invalidate the session
+        // Invalidate the session and regenerate the token to prevent reuse
         $request->session()->invalidate();
-
-        // Regenerate the token to prevent reuse
         $request->session()->regenerateToken();
 
         return redirect('/login'); // Redirect back to login
