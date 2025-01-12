@@ -69,6 +69,10 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('admin.dashboard');
 
+Route::get('/admin/users', [AdminController::class, 'showUserTable'])
+    ->middleware(['auth', 'verified'])
+    ->name('admin.users');
+
 // Group for authenticated user routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

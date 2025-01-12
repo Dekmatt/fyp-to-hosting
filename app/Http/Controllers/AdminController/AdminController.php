@@ -10,9 +10,12 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $users = User::all(); // Retrieve all users from the database
-        return view('admin.admindashboard', compact('users')); // Pass the data to the view
+        return view('admin.admindashboard');
     }
-}
 
-
+    public function showUserTable()
+    {
+        $users = User::all();
+        return view('admin.table', compact('users'));
+    }
+    }

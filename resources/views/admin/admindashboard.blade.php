@@ -1,41 +1,28 @@
-<!-- File: resources/views/admin/admindashboard.blade.php -->
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Admin Dashboard') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h2>Admin Dashboard</h2>
+    
+    <div class="mt-6">
+    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">User List</h3>
+    <a href="{{ route('admin.users') }}" class="bg-blue-500 text-white py-2 px-4 rounded inline-block">
+        <button class="bg-blue-500 text-white py-2 px-4 rounded">
+            Show User Table
+        </button>
+    </a>
+</div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
-                <div class="mt-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">User List</h3>
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        <thead>
-                            <tr>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID</th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ $user->id }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $user->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $user->email }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $user->role }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+    <!-- Button to log out and navigate to login page -->
+    <form method="POST" action="{{ route('logout') }}" class="mt-4">
+        @csrf
+        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded">
+            Log Out
+        </button>
+    </form>
+</body>
+</html>
