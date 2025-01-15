@@ -8,6 +8,9 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\PasswordController;
+use Illuminate\Support\Facades\Route;
+
 
 // Web Routes
 Route::get('/', function () {
@@ -22,11 +25,24 @@ Route::get('/register', [RegisteredUserController::class, 'create'])
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest');
 
+
+//FOR CUSTOMER USE
 // Route for customer dashboard
 Route::get('/dashboard', [UserController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+// Route for profile edit and update
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+// Add this route for the create meeting page
+    Route::get('/create-meeting', [MeetingController::class, 'meetingUser'])->name('create.meeting');
+    Route::get('/joinMeeting/{url}', [MeetingController::class, 'joinMeeting'])->name('joinMeeting');
+    Route::get('/createMeeting', [MeetingController::class, 'createMeeting'])->name('createMeeting');
+    Route::get('/saveUserName', [MeetingController::class, 'saveUserName'])->name('saveUserName');
 
 
 
@@ -35,15 +51,19 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])
 
 
 
-
-
+//FOR STAFF USE
 // Route for staff dashboard
 Route::get('/staff-dashboard', [StaffController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('staff.dashboard');
 
-// Add this route for the create meeting page
+// Route for profile edit and update
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
+// Add this route for the create meeting page
 Route::get('/create-meeting', [MeetingController::class, 'meetingUser'])->name('create.meeting');
 Route::get('/joinMeeting/{url}', [MeetingController::class, 'joinMeeting'])->name('joinMeeting');
 Route::get('/createMeeting', [MeetingController::class, 'createMeeting'])->name('createMeeting');
@@ -63,7 +83,7 @@ Route::get('/saveUserName', [MeetingController::class, 'saveUserName'])->name('s
 
 
 
-
+//FOR ADMIN USE
 // Route for admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
@@ -85,6 +105,13 @@ Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])
     ->middleware(['auth', 'verified'])
     ->name('admin.deleteUser');
 
+// Route for profile edit and update
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/admin/update-role/{id}', [ProfileController::class, 'updateRole'])->name('admin.updateRole');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
 
 
 
@@ -95,6 +122,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
 });
 
 // Require additional authentication routes
@@ -119,3 +147,6 @@ Route::middleware('auth')->group(function () {
 Route::get('twofactor', [LoginController::class, 'showTwoFactorForm'])->name('auth.twofactor');
 Route::post('verify-2fa', [LoginController::class, 'verify2fa'])->name('auth.verify2fa');
 Route::post('/2fa/verify', [App\Http\Controllers\Auth\TwoFactorController::class, 'verify'])->name('2fa.verify');
+
+Route::get('/password/change', [PasswordController::class, 'edit'])->name('password.change');
+Route::post('/password/change', [PasswordController::class, 'update'])->name('password.update');

@@ -159,7 +159,7 @@ button{
   <button id="join-btn1" onclick="joinUserMeeting()">Join Meeting</button>
 
   @if(Auth::User())
-<a href="{{url('createMeeting')}}"><button id="join-btn2">create Meeting</button></a>
+<a href="{{url('createMeeting')}}"><button id="join-btn2">Create Meeting</button></a>
 <table class="table" id="dataTable2">
     <thead>
         <tr>

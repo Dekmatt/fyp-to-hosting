@@ -4,27 +4,103 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Basic Video Call -- Agora</title>
+  <title>General Meeting</title>
   <link rel="stylesheet" href="./vendor/bootstrap.min.css">
   <link rel="stylesheet" href="./index.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .banner {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .banner-text {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      margin-top: 20px;
+    }
+    .join-info-group {
+      margin-bottom: 20px;
+    }
+    .join-info-text {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .button-group {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+    .btn-primary:disabled {
+      background-color: #ccc;
+    }
+    .alert {
+      margin-top: 20px;
+    }
+    .video-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .player {
+      flex: 1 1 300px;
+      max-width: 300px;
+      height: 300px;
+      background-color: #000;
+      border-radius: 10px;
+      position: relative;
+    }
+    .player-name {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <div class="container-fluid banner">
-    <p class="banner-text">Basic Video Call</p>
+    <p class="banner-text">General Meeting</p>
     <a style="color: rgb(255, 255, 255);fill: rgb(255, 255, 255);fill-rule: evenodd; position: absolute; right: 10px; top: 4px;"
-      class="Header-link " href="https://github.com/AgoraIO-Community/AgoraWebSDK-NG/tree/master/Demo">
-      <svg class="octicon octicon-mark-github v-align-middle" height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-    </a>
+    ></a>
   </div>
 
   <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>Congratulations!</strong><span> You can invite others join this channel by click </span><a href="" target="_blank">here</a>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div id="success-alert-with-token" class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Congratulations!</strong><span> Joined room successfully. </span>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -41,24 +117,21 @@
       <div class="row join-info-group">
           <div class="col-sm">
             <p class="join-info-text">AppID</p>
-            <input id="appid" type="text" placeholder="enter appid" required>
-            <p class="tips">If you don`t know what is your appid, checkout <a href="https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-nameappidaapp-id">this</a></p>
+            <input id="appid" type="text" class="form-control" placeholder="enter appid" required>
           </div>
           <div class="col-sm">
-            <p class="join-info-text">Token(optional)</p>
-            <input id="token" type="text" placeholder="enter token">
-            <p class="tips">If you don`t know what is your token, checkout <a href="https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#a-namekeyadynamic-key">this</a></p>
+            <p class="join-info-text">Token</p>
+            <input id="token" type="text" class="form-control" placeholder="enter token">
           </div>
           <div class="col-sm">
             <p class="join-info-text">Channel</p>
-            <input id="channel" type="text" placeholder="enter channel name" required>
-            <p class="tips">If you don`t know what is your channel, checkout <a href="https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms#channel">this</a></p>
+            <input id="channel" type="text" class="form-control" placeholder="enter channel name" required>
           </div>
       </div>
 
       <div class="button-group">
-        <button id="join" type="submit" class="btn btn-primary btn-sm">Join</button>
-        <button id="leave" type="button" class="btn btn-primary btn-sm" disabled>Leave</button>
+        <button id="join" type="submit" class="btn btn-primary">Join</button>
+        <button id="leave" type="button" class="btn btn-primary" disabled>Leave</button>
       </div>
     </form>
 
@@ -67,7 +140,6 @@
         <p id="local-player-name" class="player-name"></p>
         <div id="local-player" class="player"></div>
       </div>
-      <div class="w-100"></div>
       <div class="col">
         <div id="remote-playerlist"></div>
       </div>

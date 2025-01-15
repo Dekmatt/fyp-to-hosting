@@ -18,7 +18,7 @@
             <div class="mb-4">
                 <label for="role" class="block text-sm font-bold mb-2">Role</label>
                 <select name="role" id="role" class="block appearance-none w-full bg-gray-200 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white dark:focus:bg-gray-800 focus:border-gray-500 dark:focus:border-gray-500">
-                    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+                    <option value="customer" {{ $user->role == 'customer' ? 'selected' : '' }}>Customer</option>
                     <option value="staff" {{ $user->role == 'staff' ? 'selected' : '' }}>Staff</option>
                     <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
                 </select>

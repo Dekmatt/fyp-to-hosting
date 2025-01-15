@@ -27,19 +27,19 @@ class AdminController extends Controller
 
     public function updateRole(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->role = $request->input('role');
-        $user->save();
+        // Find the user by ID
+        $user = User::find($id);
 
-        return redirect()->route('admin.users')->with('success', 'User role updated successfully.');
-    }
+        // Check if user exists
+        if ($user) {
+            // Update the role to 'customer'
+            $user->role = 'customer';
+            $user->save();
 
-    public function deleteUser($id)
-    {
-        $user = User::findOrFail($id);
-        $user->delete();
-
-        return redirect()->route('admin.users')->with('success', 'User deleted successfully.');
+            return redirect()->route('admin.users')->with('success', 'User role updated to customer successfully.');
+        } else {
+            return redirect()->route('admin.users')->with('error', 'User not found.');
+        }
     }
 }
 
