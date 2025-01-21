@@ -42,7 +42,7 @@
 
 
         <!-- Button to navigate to create meeting page -->
-        <a href="{{ route('create.meeting') }}" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
+        <a href="{{ route('create.meeting.user') }}" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
             <i class="fas fa-video"></i> Start Video Call
         </a>
 

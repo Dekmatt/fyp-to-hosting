@@ -39,11 +39,12 @@ Route::middleware(['auth', 'customer'])->group(function () {
 });
 
 // Add this route for the create meeting page
-Route::get('/create-meeting-user', [MeetingController::class, 'create'])->name('create.meeting.user');
+Route::middleware(['auth', 'customer'])->group(function () {
+    Route::get('/meeting/create/user', [MeetingController::class, 'createMeetingUser'])->name('create.meeting.user');
     Route::get('/joinMeeting/{url}', [MeetingController::class, 'joinMeeting'])->name('joinMeeting');
     Route::get('/createMeeting', [MeetingController::class, 'createMeeting'])->name('createMeeting');
     Route::get('/saveUserName', [MeetingController::class, 'saveUserName'])->name('saveUserName');
-
+});
 
 
 

@@ -10,6 +10,9 @@ use App\Models\UserMeeting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\View\View;
+
+
 class MeetingController extends Controller
 {
     public function meetingUser()
@@ -17,6 +20,11 @@ class MeetingController extends Controller
         $data = Auth::User()->with('getMeetings')->get();
         // prx($data[0]['getMeetings']);
         return view('createMeeting',get_defined_vars());
+    }
+
+    public function createMeetingUser(): View
+    {
+        return view('createMeetinguser');
     }
 
     public function createMeeting()

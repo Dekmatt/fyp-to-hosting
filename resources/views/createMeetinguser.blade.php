@@ -158,33 +158,6 @@ button{
 
   <button id="join-btn1" onclick="joinUserMeeting()">Join Meeting</button>
 
-  @if(Auth::User())
-<table class="table" id="dataTable2">
-    <thead>
-        <tr>
-            <th scope="col">S.no</th>
-            <th scope="col">Name</th>
-            <th scope="col">Meeting Url</th>
-            <th scope="col">Start time</th>
-            <th scope="col">End time</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php $i=1; ?>
-        @foreach($data[0]['getMeetings'] as $list)
-        <tr>
-            <th scope="row">{{$i++}}</th>
-            <td>{{$list->name}}</td>
-            <td>{{$list->url}}</td>
-            <td>{{$list->created_at}}</td>
-            <td>{{$list->updated_at}}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-@endif
- 
-
 
 
 
