@@ -40,27 +40,14 @@
             </div>
         @endif
 
-        <form id="profile-picture-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <div class="profile-container" onclick="document.getElementById('profile_picture').click();">
-                <div class="profile-picture">
-                    <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : 'https://via.placeholder.com/100' }}" alt="Profile Picture" id="profile-picture-display">
-                </div>
-                <div>
-                    <h3>{{ auth()->user()->name }}</h3>
-                </div>
-            </div>
-            <input type="file" name="profile_picture" id="profile_picture" class="hidden" onchange="previewAndSubmit()">
-        </form>
 
         <!-- Button to navigate to create meeting page -->
         <a href="{{ route('create.meeting') }}" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
-            Start Video Call
+            <i class="fas fa-video"></i> Start Video Call
         </a>
 
         <!-- Button to navigate to edit profile page -->
-        <a href="{{ route('profile.edit') }}" id="editProfileButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
+        <a href="{{ route('profile.edit.customer') }}" id="editProfileButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
             Edit Profile
         </a>
 

@@ -1,4 +1,4 @@
-<!-- filepath: /c:/laragon/www/spr-fyp/resources/views/profileedit.blade.php -->
+<!-- filepath: /c:/laragon/www/spr-fyp/resources/views/profileeditStaff.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,11 +10,27 @@
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
     <div class="container mx-auto p-4">
         <h2 class="text-2xl font-bold mb-4">Edit Profile</h2>
+
+        <!-- Display Success Message -->
+        @if (session('success'))
+            <div class="alert alert-success bg-green-500 text-white p-4 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
         
-        <form method="POST" action="{{ route('profile.update') }}">
+        <form method="POST" action="{{ route('profile.update.staff') }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             
+            <!-- Profile Picture Section -->
+            <div class="mb-4">
+                <label for="profile_picture" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Profile Picture</label>
+                <div class="flex items-center">
+                    <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : 'https://via.placeholder.com/100' }}" alt="Profile Picture" class="w-24 h-24 rounded-full mr-4" id="profile-picture-display">
+                    <input type="file" name="profile_picture" id="profile_picture" class="form-control mt-1 block w-full" onchange="previewProfilePicture()">
+                </div>
+            </div>
+
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
                 <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="form-control mt-1 block w-full" required>
@@ -39,5 +55,25 @@
             </a>
         </div>
     </div>
+
+    <script>
+        function previewProfilePicture() {
+            const fileInput = document.getElementById('profile_picture');
+            const img = document.getElementById('profile-picture-display');
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function() {
+                img.src = reader.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                img.src = 'https://via.placeholder.com/100';
+            }
+        }
+    </script>
 </body>
 </html>

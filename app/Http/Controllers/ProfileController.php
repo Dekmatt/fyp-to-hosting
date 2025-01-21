@@ -13,27 +13,20 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    public function editStaff(Request $request): View
     {
-        return view('profileedit', [
-            'user' => Auth::user(), // Ensure only the authenticated user's data is retrieved
+        return view('profileeditStaff', [
+            'user' => Auth::user(),
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function updateStaff(Request $request)
     {
-        $user = Auth::user(); // Ensure only the authenticated user's data is updated
-        $user->fill($request->validated());
+        $user = Auth::user();
 
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
+        $request->validate([
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
         if ($request->hasFile('profile_picture')) {
             // Delete old profile picture if exists
@@ -48,8 +41,96 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return Redirect::route('admin.dashboard')->with('success', 'Profile updated successfully');
+        return redirect()->route('staff.dashboard')->with('success', 'Profile updated successfully.');
     }
+
+
+    public function editAdmin(Request $request): View
+    {
+        return view('profileeditAdmin', [
+            'user' => Auth::user(),
+        ]);
+    }
+
+    public function updateAdmin(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('profile_picture')) {
+            // Delete old profile picture if exists
+            if ($user->profile_picture) {
+                Storage::delete('public/' . $user->profile_picture);
+            }
+
+            // Store new profile picture
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = $path;
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.dashboard')->with('success', 'Profile updated successfully.');
+    }
+
+    public function editCustomer(Request $request): View
+    {
+        return view('profileeditCustomer', [
+            'user' => Auth::user(),
+        ]);
+    }
+
+    public function updateCustomer(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('profile_picture')) {
+            // Delete old profile picture if exists
+            if ($user->profile_picture) {
+                Storage::delete('public/' . $user->profile_picture);
+            }
+
+            // Store new profile picture
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = $path;
+        }
+
+        $user->save();
+
+        return redirect()->route('dashboard')->with('success', 'Profile updated successfully.');
+    }
+
+    /**
+     * Update the user's profile information.
+     */
+    public function update(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+        $user->fill($request->only('name', 'email'));
+
+        if ($request->hasFile('profile_picture')) {
+            // Delete old profile picture if exists
+            if ($user->profile_picture) {
+                Storage::delete('public/' . $user->profile_picture);
+            }
+
+            // Store new profile picture
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = $path;
+        }
+
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('success', 'Profile updated successfully');
+    }
+
 
     /**
      * Update the user's role.

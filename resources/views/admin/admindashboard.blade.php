@@ -140,7 +140,7 @@
                 <i class="fas fa-users"></i> Gathering Meet
             </a>
 
-            <a href="{{ route('profile.edit') }}" id="editProfileButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
+            <a href="{{ route('profile.edit.admin') }}" id="editProfileButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
                 <i class="fas fa-user-edit"></i> Edit Profile
             </a>
 

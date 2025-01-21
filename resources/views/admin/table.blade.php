@@ -19,6 +19,7 @@
                         <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Name</th>
                         <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Email</th>
                         <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Role</th>
+                        <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Profile Picture</th>
                         <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Created At</th>
                         <th class="px-6 py-3 bg-gray-50 dark:bg-gray-800 text-left text-xs font-bold text-black dark:text-white uppercase tracking-wider">Actions</th>
                     </tr>
@@ -30,6 +31,8 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">{{ $user->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">{{ $user->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">{{ $user->role }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">
+                <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : 'https://via.placeholder.com/50' }}" alt="Profile Picture" class="w-12 h-12 rounded-full"></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">{{ $user->created_at }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-black dark:text-white">
                                 <a href="{{ route('admin.editRole', $user->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">

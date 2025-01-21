@@ -33,13 +33,13 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])
     ->name('dashboard');
 
 // Route for profile edit and update
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::middleware(['auth', 'customer'])->group(function () {
+    Route::get('/profile/edit/customer', [ProfileController::class, 'editCustomer'])->name('profile.edit.customer');
+    Route::put('/profile/update/customer', [ProfileController::class, 'updateCustomer'])->name('profile.update.customer');
 });
 
 // Add this route for the create meeting page
-    Route::get('/create-meeting', [MeetingController::class, 'meetingUser'])->name('create.meeting');
+Route::get('/create-meeting-user', [MeetingController::class, 'create'])->name('create.meeting.user');
     Route::get('/joinMeeting/{url}', [MeetingController::class, 'joinMeeting'])->name('joinMeeting');
     Route::get('/createMeeting', [MeetingController::class, 'createMeeting'])->name('createMeeting');
     Route::get('/saveUserName', [MeetingController::class, 'saveUserName'])->name('saveUserName');
@@ -58,10 +58,13 @@ Route::get('/staff-dashboard', [StaffController::class, 'dashboard'])
     ->name('staff.dashboard');
 
 // Route for profile edit and update
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::middleware(['auth', 'staff'])->group(function () {
+    Route::get('/profile/edit/staff', [ProfileController::class, 'editStaff'])->name('profile.edit.staff');
+    Route::put('/profile/update/staff', [ProfileController::class, 'updateStaff'])->name('profile.update.staff');
+    Route::get('/staff/dashboard', [StaffController::class, 'dashboard'])->name('staff.dashboard');
 });
+
+
 
 // Add this route for the create meeting page
 Route::get('/create-meeting', [MeetingController::class, 'meetingUser'])->name('create.meeting');
@@ -106,10 +109,9 @@ Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])
     ->name('admin.deleteUser');
 
 // Route for profile edit and update
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::put('/admin/update-role/{id}', [ProfileController::class, 'updateRole'])->name('admin.updateRole');
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/profile/edit/admin', [ProfileController::class, 'editAdmin'])->name('profile.edit.admin');
+    Route::put('/profile/update/admin', [ProfileController::class, 'updateAdmin'])->name('profile.update.admin');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
 
