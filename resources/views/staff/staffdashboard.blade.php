@@ -21,6 +21,24 @@
         .custom-button:hover {
             background-color: #2563EB; /* Darker blue on hover */
         }
+        .profile-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -33,6 +51,16 @@
                 {{ session('success') }}
             </div>
         @endif
+
+        <!-- Profile Picture Section -->
+        <div class="profile-container">
+            <div class="profile-picture">
+                <img id="profile-picture-display" src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : 'https://via.placeholder.com/100' }}" alt="Profile Picture">
+            </div>
+            <div>
+                <h3 class="text-xl font-bold">Hi, {{ auth()->user()->name }}!</h3>
+            </div>
+        </div>
         
         <!-- Button to navigate to gathering meet page -->
         <a href="/agoraVideo/index.html" id="startVideoCallButton" class="custom-button mt-4">
@@ -47,7 +75,7 @@
         <!-- Button to navigate to edit profile page -->
         <a href="{{ route('profile.edit.staff') }}" id="editProfileButton" class="custom-button mt-4">
             Edit Profile
-        </a
+        </a>
 
         <!-- Button to log out and navigate to login page -->
         <form method="POST" action="{{ route('logout') }}" class="mt-4">

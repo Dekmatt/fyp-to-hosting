@@ -40,9 +40,18 @@
             </div>
         @endif
 
+        <!-- Profile Picture Section -->
+        <div class="profile-container">
+            <div class="profile-picture">
+                <img id="profile-picture-display" src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : 'https://via.placeholder.com/100' }}" alt="Profile Picture">
+            </div>
+            <div>
+                <h3 class="text-xl font-bold">Hi, {{ auth()->user()->name }}!</h3>
+            </div>
+        </div>
 
         <!-- Button to navigate to create meeting page -->
-        <a href="{{ route('create.meeting.user') }}" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
+        <a href="{{ route('create.meeting.user') }}" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4 mr-2">
             <i class="fas fa-video"></i> Start Video Call
         </a>
 

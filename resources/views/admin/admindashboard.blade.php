@@ -116,9 +116,15 @@
             </div>
         @endif
 
-        <!-- Greeting Section -->
-        <div class="mb-4">
-            <h3>Hi, {{ auth()->user()->name }}!</h3>
+        <!-- Profile Picture Section -->
+        <div class="profile-container">
+            <div class="profile-picture">
+                <img id="profile-picture-display" src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : 'https://via.placeholder.com/100' }}" alt="Profile Picture">
+            </div>
+            <!-- Greeting Section -->
+            <div class="mb-4">
+                <h3>Hi, {{ auth()->user()->name }}!</h3>
+            </div>
         </div>
         
         <form id="profile-picture-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
@@ -142,6 +148,10 @@
 
             <a href="{{ route('profile.edit.admin') }}" id="editProfileButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
                 <i class="fas fa-user-edit"></i> Edit Profile
+            </a>
+
+            <a href="https://console.agora.io/v2" id="meetingTokenButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button" target="_blank">
+                <i class="fas fa-key"></i> Meeting Token
             </a>
 
             <form method="POST" action="{{ route('logout') }}" class="mt-4">

@@ -26,6 +26,10 @@ class ProfileController extends Controller
 
         $request->validate([
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255',
         ]);
 
         if ($request->hasFile('profile_picture')) {
@@ -39,6 +43,10 @@ class ProfileController extends Controller
             $user->profile_picture = $path;
         }
 
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
+        $user->address = $request->input('address');
         $user->save();
 
         return redirect()->route('staff.dashboard')->with('success', 'Profile updated successfully.');
@@ -58,6 +66,10 @@ class ProfileController extends Controller
 
         $request->validate([
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255',
         ]);
 
         if ($request->hasFile('profile_picture')) {
@@ -71,6 +83,10 @@ class ProfileController extends Controller
             $user->profile_picture = $path;
         }
 
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
+        $user->address = $request->input('address');
         $user->save();
 
         return redirect()->route('admin.dashboard')->with('success', 'Profile updated successfully.');
@@ -89,6 +105,10 @@ class ProfileController extends Controller
 
         $request->validate([
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255',
         ]);
 
         if ($request->hasFile('profile_picture')) {
@@ -102,6 +122,10 @@ class ProfileController extends Controller
             $user->profile_picture = $path;
         }
 
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
+        $user->address = $request->input('address');
         $user->save();
 
         return redirect()->route('dashboard')->with('success', 'Profile updated successfully.');

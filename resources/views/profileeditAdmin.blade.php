@@ -60,6 +60,18 @@
                 <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                 <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" class="form-control mt-1 block w-full" required>
             </div>
+
+            <!-- Phone Number Section -->
+            <div class="mb-4">
+                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number</label>
+                <input type="text" name="phone" id="phone" value="{{ old('phone', $user->phone) }}" class="form-control mt-1 block w-full" required>
+            </div>
+
+            <!-- Address Section -->
+            <div class="mb-4">
+                <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
+                <textarea name="address" id="address" class="form-control mt-1 block w-full" required>{{ old('address', $user->address) }}</textarea>
+            </div>
             
             <div class="flex justify-end">
                 <button type="submit" class="custom-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

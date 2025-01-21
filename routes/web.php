@@ -105,6 +105,10 @@ Route::put('/admin/users/{id}', [AdminController::class, 'updateRole'])
     ->middleware(['auth', 'verified'])
     ->name('admin.updateRole');
 
+    Route::get('/admin/user/{id}/edit', [AdminController::class, 'editRole'])->name('admin.editRole');
+Route::put('/admin/user/{id}/update', [AdminController::class, 'updateRole'])->name('admin.updateRole');
+Route::get('/admin/user/{id}/details', [AdminController::class, 'userDetails'])->name('admin.userDetails');
+
 Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])
     ->middleware(['auth', 'verified'])
     ->name('admin.deleteUser');

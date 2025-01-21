@@ -27,7 +27,7 @@
                 <label for="profile_picture" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Profile Picture</label>
                 <div class="flex items-center">
                     <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : 'https://via.placeholder.com/100' }}" alt="Profile Picture" class="w-24 h-24 rounded-full mr-4" id="profile-picture-display">
-                    <input type="file" name="profile_picture" id="profile_picture" class="form-control mt-1 block w-full" onchange="previewProfilePicture()">
+                    <input type="file" name="profile_picture" id="profile_picture" class="form-control mt-1 block w-full" accept="image/*" onchange="previewProfilePicture()">
                 </div>
             </div>
 
@@ -39,6 +39,18 @@
             <div class="mb-4">
                 <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                 <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" class="form-control mt-1 block w-full" required>
+            </div>
+
+            <!-- Phone Number Section -->
+            <div class="mb-4">
+                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number</label>
+                <input type="text" name="phone" id="phone" value="{{ old('phone', $user->phone) }}" class="form-control mt-1 block w-full" required>
+            </div>
+
+            <!-- Address Section -->
+            <div class="mb-4">
+                <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
+                <textarea name="address" id="address" class="form-control mt-1 block w-full" required>{{ old('address', $user->address) }}</textarea>
             </div>
             
             <div class="flex justify-end">

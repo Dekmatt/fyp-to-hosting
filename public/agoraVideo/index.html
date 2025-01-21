@@ -137,7 +137,7 @@
 
     <div class="row video-group">
       <div class="col">
-        <p id="local-player-name" class="player-name"></p>
+        <p id="local-player-name" class="player-name" style="display: none;"></p>
         <div id="local-player" class="player"></div>
       </div>
       <div class="col">
@@ -150,5 +150,22 @@
   <script src="./vendor/bootstrap.bundle.min.js"></script>
   <script src="./AgoraRTC_N-4.23.0.js"></script>
   <script src="./index.js"></script>
+  <script>
+    document.getElementById('join-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      // Show user name after joining
+      document.getElementById('local-player-name').textContent = 'User Name'; // Replace 'User Name' with the actual user name
+      document.getElementById('local-player-name').style.display = 'block';
+      document.getElementById('leave').disabled = false;
+      document.getElementById('join').disabled = true;
+    });
+
+    document.getElementById('leave').addEventListener('click', function() {
+      // Hide user name after leaving
+      document.getElementById('local-player-name').style.display = 'none';
+      document.getElementById('leave').disabled = true;
+      document.getElementById('join').disabled = false;
+    });
+  </script>
 </body>
 </html>
