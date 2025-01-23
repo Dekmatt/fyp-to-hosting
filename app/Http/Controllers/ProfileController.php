@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -25,7 +26,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:12345',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:15',
@@ -65,7 +66,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:12345',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:15',
@@ -104,7 +105,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:12345',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'phone' => 'required|string|max:15',
@@ -188,4 +189,38 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function edit(Request $request): View
+    {
+        return view('profile.edit', [
+            'user' => Auth::user(),
+        ]);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect']);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        // Redirect based on user role
+        if ($user->role == 'admin') {
+            return redirect()->route('admin.dashboard')->with('success', 'Password changed successfully');
+        } elseif ($user->role == 'staff') {
+            return redirect()->route('staff.dashboard')->with('success', 'Password changed successfully');
+        } else {
+            return redirect()->route('dashboard')->with('success', 'Password changed successfully');
+        }
+    }
+
 }

@@ -54,5 +54,10 @@ class User extends Authenticatable
     {
          return $this->hasMany(MeetingEntry::class,'user_id','id');
     }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
     
 }

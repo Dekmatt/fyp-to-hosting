@@ -129,13 +129,6 @@
                     </x-primary-button>
                 </div>
 
-                <div class="flex-start gap">
-                    <p class="description">Forgot Password?</p>
-                    @if (Route::has('password.request'))
-                        <a class="link" href="{{ route('password.request') }}">Click Here</a>
-                    @endif
-                </div>
-
                 <div class="flex-start mt-4">
                     <!-- Register Here Link -->
                     <p class="description">Create a new account?</p>

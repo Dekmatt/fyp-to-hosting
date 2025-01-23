@@ -24,7 +24,8 @@
             margin: 20px auto;
             background-color: #fff;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgb(165, 53, 53);
+            position: relative;
         }
         h2 {
             font-size: 24px;
@@ -61,17 +62,27 @@
             display: inline-block;
         }
         .button-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
             margin-top: 20px;
         }
-        .button-container a, .button-container form {
-            display: inline-block;
-            margin-right: 10px;
+        .button-box {
+            background-color: #999; /* Dark grey color */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgb(102, 94, 94);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px; /* Adjust the height as needed */
         }
         .profile-container {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
             cursor: pointer;
+            position: relative;
         }
         .profile-picture {
             width: 100px;
@@ -102,6 +113,29 @@
         .button i {
             margin-right: 8px;
         }
+        .logout-button-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .feedback-container {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .feedback-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .feedback-item:last-child {
+            border-bottom: none;
+        }
+        .rating {
+            color: #ffcc00;
+        }
     </style>
 </head>
 <body>
@@ -125,6 +159,15 @@
             <div class="mb-4">
                 <h3>Hi, {{ auth()->user()->name }}!</h3>
             </div>
+            <!-- Logout Button -->
+            <div class="logout-button-container">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded button">
+                        <i class="fas fa-sign-out-alt"></i> Log Out
+                    </button>
+                </form>
+            </div>
         </div>
         
         <form id="profile-picture-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
@@ -133,33 +176,42 @@
             <input type="file" name="profile_picture" id="profile_picture" class="hidden" onchange="previewAndSubmit()">
         </form>
 
-        <!-- User List Section -->
-        <div class="mt-6">
-            <a href="{{ route('admin.users') }}" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
-                <i class="fas fa-table"></i> Show User Table
-            </a>
-        </div>
-
         <!-- Buttons -->
         <div class="button-container">
-            <a href="/agoraVideo/index.html" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
-                <i class="fas fa-users"></i> Gathering Meet
-            </a>
+            <div class="button-box">
+                <a href="{{ route('admin.users') }}" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
+                    <i class="fas fa-table"></i> Show User Table
+                </a>
+            </div>
+            <div class="button-box">
+                <a href="https://console.agora.io/v2" id="meetingTokenButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button" target="_blank">
+                    <i class="fas fa-key"></i> Meeting Token
+                </a>
+            </div>
+            <div class="button-box">
+                <a href="{{ route('profile.edit.admin') }}" id="editProfileButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                </a>
+            </div>
+            <div class="button-box">
+                <a href="/agoraVideo/index.html" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
+                    <i class="fas fa-users"></i> Gathering Meet
+                </a>
+            </div>
+        </div>
+    </div>
 
-            <a href="{{ route('profile.edit.admin') }}" id="editProfileButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
-                <i class="fas fa-user-edit"></i> Edit Profile
-            </a>
-
-            <a href="https://console.agora.io/v2" id="meetingTokenButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button" target="_blank">
-                <i class="fas fa-key"></i> Meeting Token
-            </a>
-
-            <form method="POST" action="{{ route('logout') }}" class="mt-4">
-                @csrf
-                <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded button">
-                    <i class="fas fa-sign-out-alt"></i> Log Out
-                </button>
-            </form>
+    <!-- New Feedback Container -->
+    <div class="container">
+            <div class="feedback-container">
+            <h3>Feedback and Ratings</h3>
+            @foreach($feedbacks as $feedback)
+                <div class="feedback-item">
+                    <p><strong>User:</strong> {{ $feedback->user->name }}</p>
+                    <p><strong>Feedback:</strong> {{ $feedback->feedback }}</p>
+                    <p><strong>Rating:</strong> <span class="rating">{!! str_repeat('&#9733;', $feedback->rating) !!}</span></p>
+                </div>
+            @endforeach
         </div>
     </div>
 

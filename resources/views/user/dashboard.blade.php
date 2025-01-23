@@ -4,14 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgb(165, 53, 53);
+            position: relative;
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .mt-6 {
+            margin-top: 20px;
+        }
+        h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .bg-blue-500 {
+            background-color: #007bff;
+        }
+        .bg-red-500 {
+            background-color: #dc3545;
+        }
+        .text-white {
+            color: #fff;
+        }
+        .py-2 {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .px-4 {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .rounded {
+            border-radius: 5px;
+        }
+        .inline-block {
+            display: inline-block;
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .button-box {
+            background-color: #999; /* Dark grey color */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgb(102, 94, 94);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px; /* Adjust the height as needed */
+        }
         .profile-container {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
             cursor: pointer;
+            position: relative;
         }
         .profile-picture {
             width: 100px;
@@ -28,15 +99,46 @@
         .hidden {
             display: none;
         }
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        .button i {
+            margin-right: 8px;
+        }
+        .logout-button-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-    <div class="container mx-auto p-4">
-        <h2 class="text-2xl font-bold mb-4">User Dashboard</h2>
-        
-        @if (session('status') == 'profile-updated')
-            <div class="bg-green-500 text-white p-4 rounded mb-4">
-                Profile updated successfully!
+<body>
+    <div class="header">
+        <h2>Customer Dashboard</h2>
+    </div>
+    <div class="container">
+        <!-- Display Success Message -->
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
@@ -45,28 +147,39 @@
             <div class="profile-picture">
                 <img id="profile-picture-display" src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : 'https://via.placeholder.com/100' }}" alt="Profile Picture">
             </div>
-            <div>
-                <h3 class="text-xl font-bold">Hi, {{ auth()->user()->name }}!</h3>
+            <!-- Greeting Section -->
+            <div class="mb-4">
+                <h3>Hi, {{ auth()->user()->name }}!</h3>
+            </div>
+            <!-- Logout Button -->
+            <div class="logout-button-container">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded button">
+                        <i class="fas fa-sign-out-alt"></i> Log Out
+                    </button>
+                </form>
             </div>
         </div>
 
-        <!-- Button to navigate to create meeting page -->
-        <a href="{{ route('create.meeting.user') }}" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4 mr-2">
-            <i class="fas fa-video"></i> Start Video Call
-        </a>
-
-        <!-- Button to navigate to edit profile page -->
-        <a href="{{ route('profile.edit.customer') }}" id="editProfileButton" class="bg-blue-500 text-white py-2 px-4 rounded mt-4">
-            Edit Profile
-        </a>
-
-        <!-- Button to log out and navigate to login page -->
-        <form method="POST" action="{{ route('logout') }}" class="mt-4">
-            @csrf
-            <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded">
-                Log Out
-            </button>
-        </form>
+        <!-- Buttons -->
+        <div class="button-container">
+            <div class="button-box">
+                <a href="{{ route('create.meeting.user') }}" id="startVideoCallButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
+                    <i class="fas fa-video"></i> Start Video Call
+                </a>
+            </div>
+            <div class="button-box">
+                <a href="{{ route('feedback') }}" id="feedbackButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
+                    <i class="fas fa-comment"></i> Feedback
+                </a>
+            </div>
+            <div class="button-box">
+                <a href="{{ route('profile.edit.customer') }}" id="editProfileButton" class="bg-blue-500 text-white py-2 px-4 rounded inline-block button">
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                </a>
+            </div>
+        </div>
     </div>
 
     <script>

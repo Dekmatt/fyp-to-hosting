@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FeedbackController;
+
 
 
 // Web Routes
@@ -38,6 +40,10 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::put('/profile/update/customer', [ProfileController::class, 'updateCustomer'])->name('profile.update.customer');
 });
 
+Route::get('/feedback', function () {
+    return view('user.feedback');
+})->name('feedback');
+
 // Add this route for the create meeting page
 Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/meeting/create/user', [MeetingController::class, 'createMeetingUser'])->name('create.meeting.user');
@@ -46,6 +52,10 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/saveUserName', [MeetingController::class, 'saveUserName'])->name('saveUserName');
 });
 
+Route::get('/feedback', function () {
+    return view('user.feedback');
+})->name('feedback');
+Route::post('/feedback', [FeedbackController::class, 'submit'])->name('feedback.submit');
 
 
 
@@ -120,8 +130,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
 
-
-
+Route::get('/feedback', function () {
+    return view('user.feedback');
+})->name('feedback');
+Route::post('/feedback', [FeedbackController::class, 'submit'])->name('feedback.submit');
 
 
 // Group for authenticated user routes
@@ -157,3 +169,5 @@ Route::post('/2fa/verify', [App\Http\Controllers\Auth\TwoFactorController::class
 
 Route::get('/password/change', [PasswordController::class, 'edit'])->name('password.change');
 Route::post('/password/change', [PasswordController::class, 'update'])->name('password.update');
+Route::post('/password/update', [ProfileController::class, 'updatePassword'])->name('password.update');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

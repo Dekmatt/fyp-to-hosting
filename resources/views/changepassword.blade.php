@@ -11,6 +11,22 @@
     <div class="container mx-auto p-4">
         <h2 class="text-2xl font-bold mb-4">Change Password</h2>
         
+        @if (session('success'))
+            <div class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="bg-red-500 text-white p-4 rounded mb-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
             
