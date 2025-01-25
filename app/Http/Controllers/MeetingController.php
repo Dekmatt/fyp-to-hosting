@@ -138,7 +138,7 @@ class MeetingController extends Controller
 
     public function meetingApprove(Request $request)
     {
-        $saveName = MeetingEntry::where(['random_user'=>$request->random , 'url'=>$request->url])->first();
+        $saveName = MeetingEntry::where(['random_user'=>$request->random , 'url'=>$request->url])->latest() ->first();
         
             $saveName->status = $request->type;
             if($request->type == 2){

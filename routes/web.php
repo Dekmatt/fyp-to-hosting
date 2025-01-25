@@ -50,8 +50,11 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/joinMeeting/{url}', [MeetingController::class, 'joinMeeting'])->name('joinMeeting');
     Route::get('/createMeeting', [MeetingController::class, 'createMeeting'])->name('createMeeting');
     Route::get('/saveUserName', [MeetingController::class, 'saveUserName'])->name('saveUserName');
+        Route::get('/saveUserName', [MeetingController::class, 'saveUserName'])->name('saveUserName');
 });
 
+
+Route::post('/saveUserName', [MeetingController::class, 'saveUserName'])->name('saveUserName');
 Route::get('/feedback', function () {
     return view('user.feedback');
 })->name('feedback');
@@ -82,6 +85,7 @@ Route::get('/create-meeting', [MeetingController::class, 'meetingUser'])->name('
 Route::get('/joinMeeting/{url}', [MeetingController::class, 'joinMeeting'])->name('joinMeeting');
 Route::get('/createMeeting', [MeetingController::class, 'createMeeting'])->name('createMeeting');
 Route::get('/saveUserName', [MeetingController::class, 'saveUserName'])->name('saveUserName');
+Route::post('/meetingApprove', [MeetingController::class, 'meetingApprove'])->name('meetingApprove');
 
 
 
